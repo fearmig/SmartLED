@@ -48,9 +48,9 @@ int OTAport = 8266;
 
 
 /************* MQTT TOPICS (change these topics as you wish)  **************************/
-const char* light_state_topic = "homeassistant/light/OWLED/state";
-const char* light_set_topic = "homeassistant/light/OWLED/set";
-const char* light_config_topic = "homeassistant/light/OWLED/config";
+const char* light_state_topic = "homeassistant/light/BAUSsleds1/state";
+const char* light_set_topic = "homeassistant/light/BAUSsleds1/set";
+const char* light_config_topic = "homeassistant/light/BAUSsleds1/config";
 
 const char* on_cmd = "ON";
 const char* off_cmd = "OFF";
@@ -61,7 +61,7 @@ String oldeffectString = "solid";
 
 
 /****************************************FOR JSON***************************************/
-const int BUFFER_SIZE = JSON_OBJECT_SIZE(10);
+const int BUFFER_SIZE = JSON_OBJECT_SIZE(40);
 
 
 
@@ -422,21 +422,43 @@ void sendConfig() {
   StaticJsonBuffer<BUFFER_SIZE> jsonBuffer;
   
   JsonObject& root = jsonBuffer.createObject();
-  root["~"] = "homeassistant/light/OWLED";
-  root["name"] = "OfficeWall_Strip";
+  root["~"] = "homeassistant/light/BAUSsleds1";
+  root["name"] = "Wall Strip";
   root["unique_id"] = SENSORNAME;
   root["cmd_t"] = "~/set";
   root["stat_t"] = "~/state";
   root["schema"] = "json";
-  root["brightness"] = true;
-  root["rgb"] = true;
   root["effect"] = true;
   JsonArray& effectList = root.createNestedArray("fx_list");
+  effectList.add("bpm");
+  effectList.add("candy cane");
+  effectList.add("confetti");
+  effectList.add("cyclon rainbow");
+  effectList.add("dots");
   effectList.add("fire");
+  effectList.add("glitter");
+  effectList.add("juggle");
+  effectList.add("lightning");
+  effectList.add("noise");
+  effectList.add("police all");
+  effectList.add("police one");
+  effectList.add("rainbow");
+  effectList.add("rainbow with glitter");
+  effectList.add("ripple");
+  effectList.add("sinelon");
   effectList.add("solid");
-  
-  
-
+  effectList.add("twinkle");
+  root["brightness"] = true;
+  root["rgb"] = true;
+  JsonObject& deviceInfo = root.createNestedObject("dev");
+  deviceInfo["mf"] = "BAUS";
+  deviceInfo["mdl"] = "SLEDS1.0";
+  deviceInfo["sw"] = "bausSmartLED1.0";
+  deviceInfo["ids"] = SENSORNAME;
+  deviceInfo["name"] = "Wall Strip";
+  JsonArray& connections = deviceInfo.createNestedArray("cns");
+  connections.add("mac");
+  connections.add("c8:2b:96:1e:1f:6b");
 
   char buffer[root.measureLength() + 1];
   root.printTo(buffer, sizeof(buffer));
