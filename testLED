@@ -458,7 +458,7 @@ void sendConfig() {
   deviceInfo["name"] = "Wall Strip";
   JsonArray& connections = deviceInfo.createNestedArray("cns");
   connections.add("mac");
-  connections.add("c8:2b:96:1e:1f:6b");
+  connections.add("blah");
 
   char buffer[root.measureLength() + 1];
   root.printTo(buffer, sizeof(buffer));
